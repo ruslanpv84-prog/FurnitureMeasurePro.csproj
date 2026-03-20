@@ -22,7 +22,7 @@ jobs:
           dotnet-version: '8.0.x' # Убедись, что версия совпадает с твоим проектом
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore working-directory: FurnitureMeasurePro
 
       - name: Build project
         run: dotnet build --no-restore --configuration Release
