@@ -1,24 +1,37 @@
-name: Build EXE
+name: Build and Release
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' # Убедись, что версия совпадает с твоим проектом
 
-    - name: Build
-      run: dotnet publish FurnitureMeasurePro/ -c Release -r win-x64 --self-contained true
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Upload EXE
-      uses: actions/upload-artifact@v4
-      with:
-        name: FurnitureMeasurePro
-        path: bin/Release/net7.0-windows/win-x64/publish/
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Publish project
+        run: dotnet publish FurnitureMeasurePro/ -c Release -o ./publish
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FurnitureMeasurePro-Build
+          path: ./publish
