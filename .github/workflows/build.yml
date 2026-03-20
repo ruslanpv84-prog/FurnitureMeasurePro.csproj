@@ -15,7 +15,7 @@ jobs:
         dotnet-version: 7.0
 
     - name: Build
-      run: dotnet publish FurnitureMeasurePro/-c Release -r win-x64 --self-contained true
+      run: dotnet publish FurnitureMeasurePro/ -c Release -r win-x64 --self-contained true
 
     - name: Upload EXE
       uses: actions/upload-artifact@v4
